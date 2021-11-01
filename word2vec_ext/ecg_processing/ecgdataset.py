@@ -21,6 +21,10 @@ _mit_abnormal_beats = [
     "r", "F", "e", "j", "n", "E", "/", "f", "Q", "?"
 ]
 
+_mit_abnormal_aux = [
+    "AFIB", "AFL", "J"
+]
+
 
 class EcgDataset:
 
@@ -29,6 +33,20 @@ class EcgDataset:
         if symbol in _mit_abnormal_beats:
             return 1
         elif symbol == "N" or symbol == ".":
+            return 0
+
+    @staticmethod
+    def _classify_aux(aux):
+        if aux in _mit_abnormal_aux:
+            return 1
+        elif aux == "N" or aux == ".":
+            return 0
+
+    @staticmethod
+    def _multi_classify_aux(aux):
+        try:
+            return _mit_abnormal_aux.index(aux) + 1
+        except ValueError:
             return 0
 
     @staticmethod
@@ -45,16 +63,29 @@ class EcgDataset:
         return data
 
     @staticmethod
-    def _combine_sets_beats_and_features(records_path, sets_numbers):
+    def _combine_sets_beats_and_features(annotator_type, records_path, sets_numbers):
+        """
+
+        :param annotator_type: symbol/aux/aux_multi
+        :param records_path:
+        :param sets_numbers:
+        :return:
+        """
         sets_data = []
         for set_number in sets_numbers:
             print("Loading set: " + str(set_number))
-            beats, labels, normal_percentage = EcgDataset._load(records_path, set_number)
-            sets_data.append({
-                "beats": beats,
-                "labels": labels,
-                "normal_percentage": normal_percentage
-            })
+            if os.path.exists(records_path + "/" + str(set_number) + ".dat"):
+                beats, labels, normal_percentage = EcgDataset._load(annotator_type, records_path, set_number)
+                if beats is not None:
+                    sets_data.append({
+                        "beats": beats,
+                        "labels": labels,
+                        "normal_percentage": normal_percentage
+                    })
+                else:
+                    print("Skipping empty set #" + str(set_number))
+            else:
+                print("Set " + str(set_number) + " contains invalid data. Skipping")
         return sets_data
 
     @staticmethod
@@ -69,54 +100,100 @@ class EcgDataset:
             return np.array([])
 
     @staticmethod
-    def _load(out_dir, record_number):
+    def _load(annotator_type, out_dir, record_number):
         record = wfdb.rdrecord(str(out_dir) + '/' + str(record_number))
         annotation = wfdb.rdann(str(out_dir) + '/' + str(record_number), "atr")
         atr_symbols = annotation.symbol
         atr_samples = annotation.sample
+        atr_aux = [aux[1:] for aux in annotation.aux_note]
         fs = record.fs
-        scaler = StandardScaler()
-        signal = scaler.fit_transform(record.p_signal)
+        signal = record.p_signal
 
-        # r_peaks = define_r_peaks_indices(record_wave)
-        # heartbeat_len = define_heartbeat_len(r_peaks)
-        # beats = split_in_beats(record_wave, heartbeat_len, r_peaks)
         labels = []
         valid_beats = []
         window_sec = 3
+        aux_annotator_type = annotator_type == "aux"
+        aux_multi_annotator_type = annotator_type == "aux_multi"
         for i, i_sample in enumerate(atr_samples):
-            label = EcgDataset._classify_beat(atr_symbols[i])
+            if aux_annotator_type:
+                label = EcgDataset._classify_aux(atr_aux[i])
+            elif aux_multi_annotator_type:
+                label = EcgDataset._multi_classify_aux(atr_aux[i])
+            else:
+                label = EcgDataset._classify_beat(atr_symbols[i])
             if label is not None:
                 sequence = EcgDataset._get_sequence(signal, i_sample, window_sec, fs)
                 if sequence.size > 0:
                     labels.append(label)
                     valid_beats.append(sequence)
+        if len(labels) == 0:
+            return None, None, None
 
-        normal_percentage = sum(labels) / len(labels)
+        if aux_multi_annotator_type:
+            def map_abnormal(beat_label):
+                if beat_label > 0:
+                    return 0
+                else:
+                    return 1
+
+            normal_percentage = sum(list(map(map_abnormal, labels))) / len(labels)
+        else:
+            normal_percentage = sum(labels) / len(labels)
 
         assert len(valid_beats) == len(labels)
         return valid_beats, labels, normal_percentage
 
     @staticmethod
-    def _download_dataset(out_dir, reload):
+    def _download_dataset(database_name, out_dir, reload):
+        """
+
+        :param database_name: afdb or mitdb
+        :param out_dir:
+        :param reload:
+        :return:
+        """
         if not os.path.isdir(out_dir) or reload:
-            wfdb.dl_database('mitdb', out_dir)
+            wfdb.dl_database(database_name, out_dir)
 
     @staticmethod
-    def _load_and_save_set(records_path, dataframe_path, reload=False):
-        EcgDataset._download_dataset(records_path, reload)
+    def _load_and_save_set(database_name, records_path, dataframe_path, annotator_type, reload=False):
+        """
+
+        :param database_name:
+        :param records_path:
+        :param dataframe_path:
+        :param annotator_type: symbol/aux/aux_multi
+        :param reload:
+        :return:
+        """
+        EcgDataset._download_dataset(database_name, records_path, reload)
         if os.path.exists(dataframe_path) and not reload:
             return pd.read_pickle(dataframe_path)
         else:
             print("Reloading dataset")
             data_frame = pd.DataFrame(
-                EcgDataset._combine_sets_beats_and_features(records_path, EcgDataset._get_sets_names(records_path)))
+                EcgDataset._combine_sets_beats_and_features(annotator_type, records_path,
+                                                            EcgDataset._get_sets_names(records_path)))
             data_frame.to_pickle(dataframe_path)
             return data_frame
 
     @staticmethod
-    def cache_from_mit(mit_records_path, dataframe_path, reload=False):
-        data_frame = EcgDataset._load_and_save_set(mit_records_path, dataframe_path, reload)
+    def cache_from_mit(sets_count_limit, database_name, mit_records_path, dataframe_path, annotator_type="symbol",
+                       reload=False):
+        """
+
+        :param sets_count_limit:
+        :param database_name:
+        :param mit_records_path:
+        :param dataframe_path:
+        :param annotator_type: symbol/aux/aux_multi
+        :param reload:
+        :return:
+        """
+        data_frame = EcgDataset._load_and_save_set(database_name, mit_records_path, dataframe_path, annotator_type,
+                                                   reload)
+        if sets_count_limit is not None:
+            data_frame = data_frame[:sets_count_limit]
         return EcgDataset(data_frame)
 
     @staticmethod
@@ -125,7 +202,7 @@ class EcgDataset:
                                reload_base_data=False, test_size=0.25,
                                random_state=42, sets_count_limit=None, reload_train_test=False):
         if reload_train_test or not os.path.exists(train_path) or not os.path.exists(test_path):
-            ecgdataset = EcgDataset.cache_from_mit(mit_records_path, dataframe_path, reload_base_data)
+            ecgdataset = EcgDataset.cache_from_mit(sets_count_limit, mit_records_path, dataframe_path, reload_base_data)
 
             train, test = ecgdataset.split_train_test(test_size=test_size, random_state=random_state)
 
@@ -156,23 +233,26 @@ class EcgDataset:
 
     def get_concatenated_rows(self):
         """
-
-        :param dataframe:
-        :return: dataframe with connected rows
-        """
+          :return: dataframe with connected rows
+          """
         all_beats = []
         all_labels = []
+        start_index = 0
+        start_indices = []
         for i, row in self.dataframe.iterrows():
-            all_beats.append(row["beats"])
+            start_indices.append(start_index)
+            beats = row["beats"]
+            all_beats.append(beats)
             all_labels.append(row["labels"])
+            start_index = start_index + len(beats)
 
         beats = np.concatenate(all_beats).tolist()
         labels = np.concatenate(all_labels).tolist()
         return pd.DataFrame({
             "beats": beats,
             "labels": labels
-        })
+        }), pd.DataFrame({"start_indices": start_indices})
 
     def concatenate_datasets(self):
-        concated_df = self.get_concatenated_rows()
-        return EcgReadyDataset(concated_df)
+        concated_df, train_start_indices = self.get_concatenated_rows()
+        return EcgReadyDataset(concated_df, train_start_indices)
