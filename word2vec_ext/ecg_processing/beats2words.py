@@ -1,20 +1,7 @@
 import pickle
-import uuid
 import os
-import wfdb
-import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from ecgreadydataset import EcgReadyDataset
 from sklearn.cluster import KMeans
-from sklearn.metrics import classification_report
-
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from ecgdetectors import Detectors
-from gensim.models import Word2Vec
-from datetime import datetime
 
 
 class Beats2Words:

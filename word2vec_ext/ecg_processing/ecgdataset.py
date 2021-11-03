@@ -1,20 +1,11 @@
-import pickle
-import uuid
 import os
 import wfdb
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from ecgreadydataset import EcgReadyDataset
-from sklearn.cluster import KMeans
-from sklearn.metrics import classification_report
 
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.ensemble import RandomForestClassifier
-from ecgdetectors import Detectors
-from gensim.models import Word2Vec
-from datetime import datetime
+
+from word2vec_ext.ecg_processing.ecgreadydataset import EcgReadyDataset
 
 _mit_abnormal_beats = [
     "L", "R", "B", "A", "a", "J", "S", "V",
@@ -153,13 +144,14 @@ class EcgDataset:
         :return:
         """
         if not os.path.isdir(out_dir) or reload:
+            print("Downloading dataset")
             wfdb.dl_database(database_name, out_dir)
 
     @staticmethod
     def _load_and_save_set(database_name, records_path, dataframe_path, annotator_type, reload=False):
         """
 
-        :param database_name:
+        :param database_name: afdb or mitdb
         :param records_path:
         :param dataframe_path:
         :param annotator_type: symbol/aux/aux_multi
@@ -183,7 +175,7 @@ class EcgDataset:
         """
 
         :param sets_count_limit:
-        :param database_name:
+        :param database_name: afdb or mitdb
         :param mit_records_path:
         :param dataframe_path:
         :param annotator_type: symbol/aux/aux_multi
