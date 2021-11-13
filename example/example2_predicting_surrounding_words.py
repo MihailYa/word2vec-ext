@@ -44,10 +44,10 @@ def main():
     rsc_dir = "../example_rsc"
 
     ecgdataset = ecgdatasetsholder.EcgDatasetsHolder.cache_from_mit(
-        sets_count_limit=10,
+        sets_count_limit=5,
         database_name="mitdb",
         mit_records_path=rsc_dir + "/mit_records",
-        dataframe_path=rsc_dir + "/ecgdataset_of_10_subsets",
+        dataframe_path=rsc_dir + "/ecgdataset",
         annotator_type="symbol",
         reload=False
     )
@@ -58,14 +58,14 @@ def main():
 
     beats2wordsModel = beats2words.Beats2Words()
     train_words = beats2wordsModel.fit_and_predict_words(train_ready.dataframe["beats"].tolist(),
-                                                         rsc_dir + "/beats2words_test_for_10_datasets",
+                                                         rsc_dir + "/beats2words_test_for_5_datasets",
                                                          reset_cache=True)
 
     num_features = 300
     word2vecExtModel = \
         word2vecext.Word2VecExt.load_or_fit_words_and_save(train_words,
                                                            train_ready.train_start_indices["start_indices"].tolist(),
-                                                           rsc_dir + "/word2vec2",
+                                                           rsc_dir + "/word2vec_5_dataset_test",
                                                            vector_size=num_features,
                                                            sg=1,
                                                            sample=1e-3,
