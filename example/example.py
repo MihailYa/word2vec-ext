@@ -10,7 +10,7 @@ from datetime import datetime
 if __name__ == '__main__':
     rsc_dir = "../example_rsc"
 
-    ecgdataset = ecgdataset.EcgDataset.cache_from_mit(
+    ecgdataset = ecgdataset.EcgDatasetsHolder.cache_from_mit(
         sets_count_limit=5,
         database_name="mitdb",
         mit_records_path=rsc_dir + "/mit_records",
