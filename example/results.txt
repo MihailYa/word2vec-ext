@@ -1,0 +1,20 @@
+===========================================
+Report id: 533be8ec-4455-11ec-9845-1e00ea022979
+Report start date: 13.11.2021 09:41:40
+Report end date: 13.11.2021 09:43:00
+Actual train size: 5710
+Actual validation size: 2732
+Actual validation size: 2732
+Data preparing time millis: 2097.937
+Training working time millis: 73156.792
+              precision    recall  f1-score   support
+
+           0       0.97      0.97      0.97      1453
+           1       0.97      0.96      0.97      1279
+
+    accuracy                           0.97      2732
+   macro avg       0.97      0.97      0.97      2732
+weighted avg       0.97      0.97      0.97      2732
+
+===========================================
+

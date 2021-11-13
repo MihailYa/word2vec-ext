@@ -81,3 +81,12 @@ class Word2VecExt:
                 indices.append(i)
 
         return indices, feature_vecs[:valid_words_count]
+
+    def vectorize_valid_with_labels(self, words, labels):
+        valid_beats_indices, features = self.vectorize_valid(words)
+
+        valid_beats_labels = [labels[i] for i in valid_beats_indices]
+        print("Valid labels count:")
+        print(np.bincount(np.array(valid_beats_labels)))
+
+        return features, valid_beats_labels

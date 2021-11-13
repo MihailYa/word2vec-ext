@@ -5,7 +5,7 @@ import numpy as np
 
 from sklearn.model_selection import train_test_split
 
-from word2vec_ext.ecg_processing.ecgreadydataset import EcgDataset
+from word2vec_ext.ecg_processing.ecgdataset import EcgDataset
 
 _mit_abnormal_beats = [
     "L", "R", "B", "A", "a", "J", "S", "V",
