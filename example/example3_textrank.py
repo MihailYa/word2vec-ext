@@ -41,7 +41,7 @@ def text_rank_test(c_validation_words, validation_sentences_indices, labels):
         print("Word:", word, "; Related labels:", estimated_labels_count)
         print(phrase.rank, phrase.count)
         print()
-        print(§)
+        print()
 
         # Code below make no sense
         # print(current_sentence_labels_count)
