@@ -36,7 +36,8 @@ class Word2VecExt:
 
     @staticmethod
     def load_or_fit_words_and_save(words, sentences_start_indices, file_path, workers=3, vector_size=100,
-                                   min_count=5, window=5, sample=1e-3,
+                                   min_count=5, window=5, sample=1e-3, sg=0, hs=0, negative=5,
+                                   alpha=0.025,
                                    reset=False):
         if not os.path.exists(file_path) or reset:
             print("TeachWord2Vec: Concatenating sentences")
@@ -50,7 +51,7 @@ class Word2VecExt:
             print("TeachWord2Vec: Start Word2Vec training")
             model = Word2Vec(sentences, workers=workers,
                              vector_size=vector_size, min_count=min_count,
-                             window=window, sample=sample)
+                             window=window, sample=sample, sg=sg, hs=hs, negative=negative, alpha=alpha)
             model.save(file_path)
         else:
             print("Using cached Word2Vec from file: ", file_path)
