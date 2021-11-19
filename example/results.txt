@@ -34,6 +34,7 @@ weighted avg       0.97      0.97      0.97      2732
  The following tests describe training speed increasing
  Tests were done using RandomForest
  Comparison was done on apple m1
+ Without abnormal dataset #106
 
 ===========================================
 Report id: a4944838-494b-11ec-8e8d-1e00ea022979
