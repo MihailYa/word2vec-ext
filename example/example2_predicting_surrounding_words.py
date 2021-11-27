@@ -64,7 +64,7 @@ def main():
     num_features = 300
     word2vecExtModel = \
         word2vecext.Word2VecExt.load_or_fit_words_and_save(train_words,
-                                                           train_ready.train_start_indices["start_indices"].tolist(),
+                                                           train_ready.record_start_indices["start_indices"].tolist(),
                                                            rsc_dir + "/word2vec_5_dataset_test",
                                                            vector_size=num_features,
                                                            sg=1,
@@ -73,7 +73,7 @@ def main():
                                                            alpha=0.01,
                                                            reset=True)
 
-    calculate_word2vec_accuracy(word2vecExtModel.word2vec, train_words, train_ready.train_start_indices["start_indices"].tolist())
+    calculate_word2vec_accuracy(word2vecExtModel.word2vec, train_words, train_ready.record_start_indices["start_indices"].tolist())
     return
     # noinspection DuplicatedCode
     train_data = word2vecExtModel.vectorize_valid_with_labels(train_words, train_ready.dataframe["labels"].tolist())

@@ -69,11 +69,11 @@ class Beats2Words:
 
         return words
 
-    def fit_and_predict_words(self, beats_list, cache_file_name, reset_cache=False):
+    def fit_and_predict_words(self, beats, cache_file_name, reset_cache=False):
 
         if reset_cache or not (os.path.exists(cache_file_name + "_qrs.pkl")
                                and os.path.exists(cache_file_name + "_pt.pkl")):
-            (p_waves, qrs, t_waves) = Beats2Words._split_beats_in_p_qrt_t(beats_list)
+            (p_waves, qrs, t_waves) = Beats2Words._split_beats_in_p_qrt_t(beats)
             print("Fitting QRS KMeans")
             self.qrs_kmeans = KMeans(init='k-means++', n_clusters=6, n_init=3)
             # self.qrs_kmeans = KMeans(init='k-means++', n_clusters=50, n_init=25, max_iter=600)
@@ -98,7 +98,7 @@ class Beats2Words:
         else:
             print("Using cached BeatsToWordsConverter from file: ", cache_file_name)
             self.load(cache_file_name)
-            return self.predict_words(beats_list)
+            return self.predict_words(beats)
 
     def predict_words(self, beats_list):
         (p_waves, qrs, t_waves) = Beats2Words._split_beats_in_p_qrt_t(beats_list)

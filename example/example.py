@@ -37,22 +37,28 @@ if __name__ == '__main__':
     data_preparing_start_time = datetime.now()
 
     beats2wordsModel = beats2words.Beats2Words()
-    train_words = beats2wordsModel.fit_and_predict_words(train_ready.dataframe["beats"].tolist(),
-                                                         rsc_dir + "/beats2words",
-                                                         reset_cache=False)
+    train_words = beats2wordsModel.fit_and_predict_words(
+        beats=train_ready.dataframe["beats"].tolist(),
+        cache_file_name=rsc_dir + "/beats2words",
+        reset_cache=False)
 
     validation_words = beats2wordsModel.predict_words(test_ready.dataframe["beats"].tolist())
 
     num_features = 300
     word2vecExtModel = \
-        word2vecext.Word2VecExt.load_or_fit_words_and_save(train_words,
-                                                           train_ready.train_start_indices["start_indices"].tolist(),
-                                                           rsc_dir + "/word2vec",
-                                                           vector_size=num_features,
-                                                           reset=False)
-    train_data = word2vecExtModel.vectorize_valid_with_labels(train_words, train_ready.dataframe["labels"].tolist())
+        word2vecext.Word2VecExt.load_or_fit_words_and_save(
+            words=train_words,
+            sentences_start_indices=train_ready.record_start_indices["start_indices"].tolist(),
+            file_path=rsc_dir + "/word2vec",
+            vector_size=300,
+            reset=False)
+    train_data = word2vecExtModel.vectorize_valid_with_labels(
+        words=train_words,
+        labels=train_ready.dataframe["labels"].tolist())
 
-    validation_data = word2vecExtModel.vectorize_valid_with_labels(validation_words, test_ready.dataframe["labels"].tolist())
+    validation_data = word2vecExtModel.vectorize_valid_with_labels(
+        validation_words,
+        test_ready.dataframe["labels"].tolist())
 
     (train_x, train_y), (validation_x, validation_y) = (train_data, validation_data)
 

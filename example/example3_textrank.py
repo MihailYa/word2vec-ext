@@ -70,11 +70,13 @@ def main():
     train_ready.save(rsc_dir + "/full_dataset")
 
     beats2wordsModel = beats2words.Beats2Words()
-    train_words = beats2wordsModel.fit_and_predict_words(train_ready.dataframe["beats"].tolist(),
-                                                         rsc_dir + "/beats2words_test_for_5_datasets",
-                                                         reset_cache=True)
+    train_words = beats2wordsModel.fit_and_predict_words(
+        beats=train_ready.dataframe["beats"].tolist(),
+        cache_file_name=rsc_dir + "/beats2words_test_for_5_datasets",
+        reset_cache=True)
 
-    text_rank_test(train_words, train_ready.train_start_indices["start_indices"].tolist(), train_ready.dataframe["labels"].tolist())
+    text_rank_test(train_words, train_ready.record_start_indices["start_indices"].tolist(),
+                   train_ready.dataframe["labels"].tolist())
 
 
 if __name__ == '__main__':
