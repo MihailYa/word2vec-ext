@@ -156,3 +156,87 @@ weighted avg       0.89      0.85      0.85      4208
 
 ===========================================
 SPEED-END}}}}
+
+
+GRADIENT BOOSTING:::
+
+===========================================
+Report id: f9c378a8-4f6d-11ec-a019-b8819835c9f5
+Report start date: 27.11.2021 12:31:58
+Report end date: 27.11.2021 12:37:10
+Actual train size: 6343
+Actual validation size: 4257
+Data preparing time millis: 1.004
+Training working time millis: 301346.888
+Comment: Training GB without Word2vec
+              precision    recall  f1-score   support
+
+           0       0.97      0.95      0.96      2175
+           1       0.95      0.97      0.96      2082
+
+    accuracy                           0.96      4257
+   macro avg       0.96      0.96      0.96      4257
+weighted avg       0.96      0.96      0.96      4257
+
+===========================================
+
+===========================================
+Report id: 3a469dd4-4f70-11ec-b73c-b8819835c9f5
+Report start date: 27.11.2021 12:52:35
+Report end date: 27.11.2021 12:53:17
+Actual train size: 5836
+Actual validation size: 2730
+Data preparing time millis: 3648.67
+Training working time millis: 23519.542999999998
+Comment: Training GB with Word2vec
+              precision    recall  f1-score   support
+
+           0       1.00      0.97      0.98      1422
+           1       0.97      1.00      0.98      1308
+
+    accuracy                           0.98      2730
+   macro avg       0.98      0.98      0.98      2730
+weighted avg       0.98      0.98      0.98      2730
+
+===========================================
+
+===========================================
+Report id: f4cfa192-4f70-11ec-8b32-b8819835c9f5
+Report start date: 27.11.2021 12:56:44
+Report end date: 27.11.2021 12:58:30
+Actual train size: 10477
+Actual validation size: 1643
+Data preparing time millis: 51741.618
+Training working time millis: 37460.612
+Comment: Training GB with Word2vec
+              precision    recall  f1-score   support
+
+           0       0.94      1.00      0.97       834
+           1       1.00      0.93      0.96       809
+
+    accuracy                           0.97      1643
+   macro avg       0.97      0.97      0.97      1643
+weighted avg       0.97      0.97      0.97      1643
+
+===========================================
+
+===========================================
+Report id: 7d1d91d2-4f73-11ec-bd8a-b8819835c9f5
+Report start date: 27.11.2021 13:07:21
+Report end date: 27.11.2021 13:16:38
+Actual train size: 11086
+Actual validation size: 4208
+Data preparing time millis: 1.001
+Training working time millis: 539143.429
+Comment: Training GB without Word2vec
+              precision    recall  f1-score   support
+
+           0       0.87      1.00      0.93      2076
+           1       1.00      0.85      0.92      2132
+
+    accuracy                           0.93      4208
+   macro avg       0.93      0.93      0.93      4208
+weighted avg       0.94      0.93      0.93      4208
+
+===========================================
+

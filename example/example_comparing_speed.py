@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     # beats2wordsModel = beats2words.Beats2Words()
     # train_words = beats2wordsModel.fit_and_predict_words(train_ready.dataframe["beats"].tolist(),
-    #                                                      rsc_dir + "/beats2words",
+    #                                                      rsc_dir + "/beats2words7",
     #                                                      reset_cache=False)
     #
     # validation_words = beats2wordsModel.predict_words(test_ready.dataframe["beats"].tolist())
@@ -47,21 +47,22 @@ if __name__ == '__main__':
     # num_features = 300
     # word2vecExtModel = \
     #     word2vecext.Word2VecExt.load_or_fit_words_and_save(train_words,
-    #                                                        train_ready.train_start_indices["start_indices"].tolist(),
-    #                                                        rsc_dir + "/word2vec",
+    #                                                        train_ready.record_start_indices["start_indices"].tolist(),
+    #                                                        rsc_dir + "/word2vec7",
     #                                                        vector_size=num_features,
     #                                                        reset=False)
     # train_data = word2vecExtModel.vectorize_valid_with_labels(train_words, train_ready.dataframe["labels"].tolist())
     #
     # validation_data = word2vecExtModel.vectorize_valid_with_labels(validation_words, test_ready.dataframe["labels"].tolist())
-
+    #(train_x, train_y), (validation_x, validation_y) = (train_data, validation_data)
     (train_x, train_y), (validation_x, validation_y) = ((train_ready.dataframe["beats"].tolist(), train_ready.dataframe["labels"].tolist()), (test_ready.dataframe["beats"].tolist(), test_ready.dataframe["labels"].tolist()))
+
 
     data_preparing_time_spend = datetime.now() - data_preparing_start_time
 
-    print("Training random forest")
+    print("Training GB")
     training_start_time = datetime.now()
-    forest = RandomForestClassifier() #GradientBoostingClassifier(n_estimators=500, learning_rate=0.001, max_depth=7)
+    forest = GradientBoostingClassifier()#(n_estimators=500, learning_rate=0.001, max_depth=7)
     forest = forest.fit(train_x, train_y)
     training_time_spend = datetime.now() - training_start_time
 
@@ -84,7 +85,7 @@ if __name__ == '__main__':
     f.write("Actual validation size: " + str(len(validation_x)) + "\n")
     f.write("Data preparing time millis: " + str(data_preparing_time_spend.total_seconds() * 1000) + "\n")
     f.write("Training working time millis: " + str(training_time_spend.total_seconds() * 1000) + "\n")
-    f.write("Comment: Training without Word2vec\n")
+    f.write("Comment: Training GB without Word2vec\n")
     f.write(report)
     f.write("\n===========================================")
     f.write("\n\n")
