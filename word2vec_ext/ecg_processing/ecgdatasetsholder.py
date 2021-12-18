@@ -51,6 +51,9 @@ class EcgDatasetsHolder:
 
         data = [int(x) for x in list(set(list(map(get_file_name, onlyfiles))))]
         data.sort()
+
+        # Really bad record
+        data.remove(106)
         return data
 
     @staticmethod
