@@ -28,11 +28,16 @@ There are examples:
 * `example/example3_textrank.py` - example of library usage for TextRank method applying on ECG-words
 
   To run execute: `python -m example.example3_textrank`
-* `example/example4_predicting_synonim.py` - example of library usage for predicting synonym ECG-words using `Word2Vec`
+* `example/example4_predicting_synonym.py` - example of library usage for predicting synonym ECG-words using `Word2Vec`
 
-  To run execute: `python -m example.example4_predicting_synonim`
+  To run execute: `python -m example.example4_predicting_synonym`
 
 Some of previous important runs located in `example/results.txt`
 
 ## Documentation
 Documentation can be found in [ІП02-мп_Язенок.pdf](docs/ІП02-мп_Язенок.pdf)
+
+## Jupyter notebook drafts
+You can also use jupyter notebook drafts, which were used as a base for this library.  
+Drafts located in the separate repository:
+[https://github.com/MihailYa/word2vec-analysis](https://github.com/MihailYa/word2vec-analysis)
