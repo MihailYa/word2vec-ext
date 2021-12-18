@@ -35,4 +35,4 @@ There are examples:
 Some of previous important runs located in `example/results.txt`
 
 ## Documentation
-Document can be found in [ІП02-мп_Язенок.pdf](docs/ІП02-мп_Язенок.pdf)
+Documentation can be found in [ІП02-мп_Язенок.pdf](docs/ІП02-мп_Язенок.pdf)
