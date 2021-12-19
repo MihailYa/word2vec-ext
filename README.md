@@ -5,14 +5,16 @@ This library provides more specific methods for ECG analysis.
 
 ## Requirements
 
-Python 3.6.0
-pip install wheel
+Python 3.9.0
+
+Recommended:  
+`pip install wheel`
 
 ## Examples
 
 All the examples located in the `example` directory.
 
-Before running examples, install the dependencies:
+Before running examples, install the dependencies:  
 `pip install .`
 
 There are examples:
