@@ -49,7 +49,7 @@ class Word2VecExt:
 
             print("TeachWord2Vec: Start Word2Vec training")
             model = Word2Vec(sentences, workers=workers,
-                             size=vector_size, min_count=min_count,
+                             vector_size=vector_size, min_count=min_count,
                              window=window, sample=sample, sg=sg, hs=hs, negative=negative, alpha=alpha)
             model.save(file_path)
         else:

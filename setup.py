@@ -9,7 +9,7 @@ setup(name='word2vecext',
       install_requires=[
           "wfdb",
           "sklearn",
-          "gensim==3.8.3",
+          "gensim",
           "pandas",
           "scikit-learn",
           "numpy",
