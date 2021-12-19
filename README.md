@@ -3,9 +3,17 @@
 This is a library with extensions for sklearn, gensim and wfdb libraries.  
 This library provides more specific methods for ECG analysis.
 
+## Requirements
+
+Python 3.6.0
+pip install wheel
+
 ## Examples
 
 All the examples located in the `example` directory.
+
+Before running examples, install the dependencies:
+`pip install .`
 
 There are examples:
 

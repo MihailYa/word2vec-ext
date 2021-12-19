@@ -12,6 +12,8 @@ setup(name='word2vecext',
           "gensim",
           "pandas",
           "scikit-learn",
-          "numpy"
+          "numpy",
+          "matplotlib",
+          "py-ecg-detectors"
       ]
       )
