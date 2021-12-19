@@ -5,7 +5,7 @@ setup(name='word2vecext',
       author_email='mihailyazenok@gmail.com',
       url='https://github.com/MihailYa/word2vec-ext',
       version='0.0.1',
-      py_modules=['word2vec_ext.word2vec', 'word2vec_ext.ecg_processing'],
+      py_modules=['word2vec_ext.word2vec', 'word2vec_ext.ecg_processing', 'word2vec_ext.kmeans'],
       install_requires=[
           "wfdb",
           "sklearn",

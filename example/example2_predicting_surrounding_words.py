@@ -1,4 +1,3 @@
-from word2vec_ext.ecg_processing import ecgdataset
 from word2vec_ext.ecg_processing import ecgdatasetsholder
 from word2vec_ext.ecg_processing import beats2words
 from word2vec_ext.word2vec import word2vecext

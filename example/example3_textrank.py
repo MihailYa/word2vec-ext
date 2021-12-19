@@ -1,14 +1,7 @@
-from word2vec_ext.ecg_processing import ecgdataset
 from word2vec_ext.ecg_processing import ecgdatasetsholder
 from word2vec_ext.ecg_processing import beats2words
-from word2vec_ext.word2vec import word2vecext
 import spacy
-import pytextrank
 from collections import Counter
-import uuid
-from sklearn.metrics import classification_report
-from sklearn.ensemble import GradientBoostingClassifier
-from datetime import datetime
 
 
 def text_rank_test(c_validation_words, validation_sentences_indices, labels):
