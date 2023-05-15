@@ -8,7 +8,6 @@ setup(name='word2vecext',
       py_modules=['word2vec_ext.word2vec', 'word2vec_ext.ecg_processing', 'word2vec_ext.kmeans'],
       install_requires=[
           "wfdb==3.4.1",
-          "sklearn",
           "gensim==4.1.2",
           "pandas==1.1.5",
           "scikit-learn==1.0.1",
